@@ -1,0 +1,50 @@
+#!/bin/python
+
+import sys, os, h5py
+import numpy as np
+
+def check_argv(argv_):
+    if not (len(argv_) == 2):
+        sys.exit(0);
+    else:
+        list = argv_[1];
+        if not (os.path.exists(list) or os.access(list, os.R_OK)):
+            print "%s is not exist or unreadable" % (list);
+            sys.exit(0);
+
+
+def read_list(list_):
+    paths = [];
+
+    with open(list_, "r") as fid:
+        for line in fid:
+            contains = line.replace('\n', '').split(',');
+            path = contains[0];
+            paths.append(path);
+
+    fid.close();
+    return (paths);
+
+def check_path(paths_):
+    print "check_paths"
+
+    for index in range(len(paths_)):
+        path_ = paths_[index];
+        try:
+            h5_1_fid = h5py.File(path_, "r");
+            h5_1_data = np.asarray(h5_1_fid['/data']);
+            h5_1_fid.close();
+        except:
+            print path_;
+
+def main():
+    check_argv(sys.argv);
+
+    opflows_list = sys.argv[1];
+    (paths) = read_list(opflows_list);
+
+    check_path(paths);
+
+
+if __name__ == "__main__":
+    main()

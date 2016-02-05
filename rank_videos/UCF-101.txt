@@ -1,0 +1,13 @@
+vids_list =     /export/space2/vugia/rank_videos/UCF-101_vids.txt
+opflows_list =  /export/space2/vugia/rank_videos/UCF-101_1opflows.txt
+model =         /export/space2/vugia/rank_videos/MODEL/temporal_01_1opflows.caffemodel
+network =       /export/space2/vugia/rank_videos/MODEL/temporal.txt
+tmp_dir =       /export/space/vugia/tmp/rank_videos
+features_dir =  /export/space/vugia/tmp/rank_videos/features
+result_dir =    /export/space2/vugia/rank_videos/result/UCF-101
+script_dir =    /export/space2/vugia/rank_videos/src
+
+
+
+
+# sample configuration parameters file
