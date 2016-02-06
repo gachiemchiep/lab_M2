@@ -1,5 +1,0 @@
-cat UCF-101_10opflows_all.log | grep ApplyLipstick | rev | cut -d " " -f 1 | rev | awk '{ sum += $1; n++ } END { if (n > 0) print sum / n; }'
-
-ApplyLipstick : 0.840789
-
-cat UCF-101_10opflows_all.log | grep BreastStroke | rev | cut -d " " -f 1 | rev | awk '{ sum += $1; n++ } END { if (n > 0) print sum / n; }'

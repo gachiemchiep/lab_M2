@@ -30,6 +30,13 @@ dense_flowをコンパイルする。
     # then compile
     cmake ..; make
 
+コンパイル後 、bash do_extract.sh を実行して、動画からのframeとOptical flowsを抽出する。
+
+Optical flowsまたはframeをhdf5 fileに圧縮する
+-------------------------------------------
+
+
+
 
 
 
