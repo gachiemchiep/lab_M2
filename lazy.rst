@@ -31,12 +31,58 @@ dense_flowをコンパイルする。
     cmake ..; make
 
 コンパイル後 、bash do_extract.sh を実行して、動画からのframeとOptical flowsを抽出する。
+抽出されたframeとOptical flowsはJPEGファイルで保存されています。
+デフォルト設定を利用すれば、抽出されたファイルは以下のようなファイルで保存する。
+
+.. code-block:: html
+
+    # 動画のサイズを(256x340x3xt)に変更
+    # test file
+    v_PlayingPiano_g01_c01.avi
+    # result
+    v_PlayingPiano_g01_c01/
+        flow_i_0111.jpg     : 111番目 frame
+        flow_x_0123.jpg     : 123番目 Optical flowの水平部
+        flow_y_0123.jpg     : 123番目 Optical flowの垂直部
+
 
 Optical flowsまたはframeをhdf5 fileに圧縮する
 -------------------------------------------
 
+LevelDBに圧縮、精度テストなどをしやすくになるため、
+一本のショットのOptical flowsまたはframeはhdf5ファイルに圧縮します。
+圧縮ルールは以下のようになる。
 
+CaffeのDatum形は[sample_count, data_channels, data_height, data_width]があります。
+Opencvのcv2ライブラリは画像を読む時に、画像のデータが[height, width, channel]サイズの
+行列に保存されます。
+CaffeのDatum形に対応するため、[height, width, channel]から[channel, height, width]
+にtransposeすることが必要です。
+Optical flowsの場合、画像のchannelは``1''(gray)なので、transposeすることが必要ではありません。
 
+.. code-block:: html
+
+    ### ショットのframe順番（例として15に置く）###
+    1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22
+    ### T サンプリングを選択（例として3に置く）###
+    ## frame_start = 3
+    ## frame_end = 20 - 10 - 3 = 7
+    3 4 5 6 7
+    ## selected frame (選択されたframeの距離は等しい)
+    3 5 7
+    ## from each selected frame (例として5に置く)
+    # frameの場合 #
+    5 番目のframe: flow_i_0005.jpg
+    # caffeに対応するため
+    transpose from 256x340x3 to 3x256x340
+    # Optical flows: in case of 10 stakced optical flow #
+    順番に選択: flow_x_0005.jpg + flow_y_0005.jpg + ... + flow_x_0015.jpg + flow_y_0015.jpg
+    サイズ: [20, 256, 340]に圧縮
+    ## 選択されたframeまたはOptical flowsの全てをhdf5に圧縮
+    # frameの場合 #
+    [3, 3 , 256, 340]
+    # Optical flowsの場合 #
+    [3, 20, 256, 340]
 
 
 
