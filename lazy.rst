@@ -108,8 +108,11 @@ Optical flowsの場合、画像のchannelは``1''(gray)なので、transposeす�
     # [20x256x340] -> [20x224x224] x 20
     python merge_OFs.py $DIR $STACKED_COUNT $H5_FILE crop 25;
 
+Two-stream CNN
+----------------
+
 Two-stream CNNの学習用、テスト(validate)用のデータを生成
--------------------------------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 h5list_2lveldb.shを利用して、データを生成します。
 学習なので、データのshufflingが必要です。
@@ -121,3 +124,21 @@ h5list_2lveldb.pyも一回shuffleします。
 .. code-block:: html
 
     bash h5list_2leveldb.sh
+
+学習
+^^^^^^^^
+
+学習前に、データのmeanファイルを生成します。
+
+.. code-block:: html
+
+    caffe/build/tool/compute_mean.bin -backend leveldb leveldb_path output_mean_file
+
+meanファイルを生成あと、two-stream_learnの中にあるscriptを利用して、学習を行います。
+batch=256は大きいので、より小さい値を利用する場合、学習step数を増えなければなりません。
+
+プログラムは以下のように実行します。
+
+.. code-block:: html
+
+    bash train_temporal.sh train_temporal.conf
