@@ -1,0 +1,8 @@
+cmake_minimum_required(VERSION 2.8)
+project( denseFlow )
+set(OpenCV_INCLUDE_DIRS "/export/space2/vugia/opencv/opencv-2.4.11_build/include" )
+set(OpenCV_LIBS opencv_core opencv_imgproc opencv_calib3d opencv_video opencv_features2d opencv_ml opencv_highgui opencv_objdetect opencv_contrib opencv_legacy opencv_gpu)
+LINK_DIRECTORIES( "/export/space2/vugia/opencv/opencv-2.4.11_build/lib" )
+include_directories( ${OpenCV_INCLUDE_DIRS} )
+add_executable( denseFlow_gpu_2 denseFlow_gpu_2.cpp )
+target_link_libraries( denseFlow_gpu_2 ${OpenCV_LIBS} )
