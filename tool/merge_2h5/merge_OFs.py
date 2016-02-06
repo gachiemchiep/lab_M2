@@ -32,10 +32,7 @@ def check_argv(argv_):
             print "crop/noncrop";
             sys.exit(0)
 
-        sampling_count = argv_[5];
-        print("Sampling count is: %d");
-        print("When testing model accuracy, take only 25 sample");
-        print("crop + 25");
+        sampling_count = int(argv_[5]);
 
 
 def get_OF_files(path_, key_):
@@ -244,7 +241,7 @@ def main():
     stacked_count = int(sys.argv[2]);
     output_hdf5 = sys.argv[3];
     option = sys.argv[4];
-    sampling_count = sys.argv[5];
+    sampling_count = int(sys.argv[5]);
 
     OF_x_paths = get_OF_files(OF_path, OF_x_KEY);
     OF_y_paths = get_OF_files(OF_path, OF_y_KEY);

@@ -30,9 +30,7 @@ def check_argv(argv_):
             print "crop/noncrop";
             sys.exit(0)
 
-        sampling_count = argv_[4];
-        print("Sampling count is: %d");
-        print("When testing model accuracy, take at least 25 sample");
+        sampling_count = int(argv_[4]);
 
 
 def get_img_files(path_, key_):
@@ -170,7 +168,7 @@ def main():
     img_path = sys.argv[1];
     output_hdf5 = sys.argv[2];
     option = sys.argv[3];
-    sampling_count = sys.argv[4];
+    sampling_count = int(sys.argv[4]);
 
     img_paths = get_img_files(img_path, IMG_KEY);
 
