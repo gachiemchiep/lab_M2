@@ -73,8 +73,6 @@ Optical flowsの場合、画像のchannelは``1''(gray)なので、transposeす�
     ## from each selected frame (例として5に置く)
     # frameの場合 #
     5 番目のframe: flow_i_0005.jpg
-    # caffeに対応するため
-    transpose from 256x340x3 to 3x256x340
     # Optical flows: in case of 10 stakced optical flow #
     順番に選択: flow_x_0005.jpg + flow_y_0005.jpg + ... + flow_x_0015.jpg + flow_y_0015.jpg
     サイズ: [20, 256, 340]に圧縮
@@ -84,6 +82,30 @@ Optical flowsの場合、画像のchannelは``1''(gray)なので、transposeす�
     # Optical flowsの場合 #
     [3, 20, 256, 340]
 
+モデルの学習の場合、選択されたframeとOptical flowsの全体を利用します。
+学習する時に、caffeの"crop_size"や"mirror"を使えば、
+データのrandom croppingとmirroingすることができます。
+プログラムは以下のように実行します。
 
+.. code-block:: html
+
+    # Optical flows #
+    python merge_OFs.py $DIR $STACKED_COUNT $H5_FILE noncrop $SAMPLING_COUNT;
+    # image #
+    python merge_imgs.py $DIR $H5_FILE noncrop $SAMPLING_COUNT;
+
+
+モデルのテストの場合、選択されたframeとOptical flowsの四角と中心部分から[224x224]
+サイズを手でcropします。
+プログラムは以下のように実行します。
+
+.. code-block:: html
+
+    # image #
+    # [3x256x340] -> [3x224x224] x 5
+    python merge_imgs.py $DIR $H5_FILE crop 25;
+    # Optical flows #
+    # [20x256x340] -> [20x224x224] x 20
+    python merge_OFs.py $DIR $STACKED_COUNT $H5_FILE crop 25;
 
 
