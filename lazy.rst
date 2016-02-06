@@ -108,4 +108,16 @@ Optical flowsの場合、画像のchannelは``1''(gray)なので、transposeす�
     # [20x256x340] -> [20x224x224] x 20
     python merge_OFs.py $DIR $STACKED_COUNT $H5_FILE crop 25;
 
+Two-stream CNNの学習用、テスト(validate)用のデータを生成
+-------------------------------------------------------
 
+h5list_2lveldb.shを利用して、データを生成します。
+学習なので、データのshufflingが必要です。
+shufflingのマナーを守るため、h5listは一回shuffleします。
+h5list_2lveldb.pyも一回shuffleします。
+
+プログラムは以下のように実行します。
+
+.. code-block:: html
+
+    bash h5list_2leveldb.sh
