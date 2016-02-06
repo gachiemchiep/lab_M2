@@ -142,3 +142,24 @@ batch=256は大きいので、より小さい値を利用する場合、学習st
 .. code-block:: html
 
     bash train_temporal.sh train_temporal.conf
+
+テスト
+^^^^^^^^^^^
+
+上記に記載されたことを通じて、テストを生成します。
+テストサイズは[125x3x224x224], [125x10x224x224],...です。
+プログラムは以下のように実行します。
+
+.. code-block:: html
+
+    Usage python test_network.py network(_cls.txt) trained_model mean_file test_h5_list
+
+
+テストの精度を上れるため、テストデータの"mirror"も使わなければなりません。
+テストサイズは[250x3x224x224], [250x10x224x224],...になります。
+
+.. code-block:: html
+
+    input_dim: 125      -> 250 になる
+
+
