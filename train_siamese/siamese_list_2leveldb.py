@@ -10,8 +10,7 @@ import caffe
 
 
 #### global params ####
-MODES = ("image", "opflows")
-THRESHOLD_VAL = 64;
+MODES = ("image", "hdf5")
 MERGE_COUNT = 50;  # bigger value come with bigger memory requirement
 
 
@@ -20,7 +19,7 @@ def check_argv(argv_):
         print "Generate leveldb data to train siamse net"
         print "Usage: python list_2_leveldb.py h5list output_leveldb image\n" \
               "Or \n" \
-              "python list_2_leveldb.py h5list output_leveldb opflows shuffled/unshuffled threshold/raw";
+              "python list_2_leveldb.py h5list output_leveldb hdf5 shuffled/unshuffled";
         sys.exit(0);
     else:
         list = argv_[1];
@@ -132,7 +131,6 @@ def merge_imgs(argv_):
             im_1_raw = cv2.imread(patch_1_paths[list_index]);
             im_2_raw = cv2.imread(patch_2_paths[list_index]);
 
-
             im_1 = cv2.resize(im_1_raw, (340, 256))
             im_2 = cv2.resize(im_2_raw, (340, 256))
 
@@ -172,7 +170,7 @@ def merge_imgs(argv_):
             batch.Put(db_key_str.encode('ascii'), datum.SerializeToString());
 
             # push per 1000 file
-            if ((db_key % 1000) == 0) or (index == (data_1.shape[0] - 1)):
+            if ((db_key % 2000) == 0) or (index == (data_1.shape[0] - 1)):
                 # write batch
                 print 'Processed %d line with datum format:' \
                       'channels: %d  height: %d  width: %d' \
@@ -189,8 +187,8 @@ def merge_imgs(argv_):
         del data_sims
 
 
-def merge_opflows(argv_):
-    print "merge_opflows"
+def merge_hdf5(argv_):
+    print "merge_hdf5"
 
     pair_list = argv_[1];
     (h5_1_paths, h5_2_paths, similarities) = read_list(pair_list);
@@ -198,7 +196,6 @@ def merge_opflows(argv_):
     leveldb_path = argv_[2];
 
     is_shuffled = False;
-    is_threshold = False;
 
     try:
         tmp = argv_[4];
@@ -206,14 +203,6 @@ def merge_opflows(argv_):
             is_shuffled = True;
         elif (tmp == "unshuffled"):
             is_shuffled = False;
-        else:
-            raise Exception('Invalid options');
-
-        tmp2 = argv_[5];
-        if (tmp2 == "threshold"):
-            is_threshold = True;
-        elif (tmp2 == "raw"):
-            is_threshold = False;
         else:
             raise Exception('Invalid options');
 
@@ -304,11 +293,6 @@ def merge_opflows(argv_):
             part_1 = data_1[shuffle_keys[index], :, :, :];
             part_2 = data_2[shuffle_keys[index], :, :, :];
 
-            #
-            # if is_threshold:
-            #    part_1[np.where(part_1 >= THRESHOLD_VAL)] = 255;
-            #    part_2[np.where(part_2 >= THRESHOLD_VAL)] = 255;
-
             data_pair = np.concatenate([part_1, part_2], axis=0);
 
             datum = caffe.proto.caffe_pb2.Datum();
@@ -343,7 +327,7 @@ def merge_opflows(argv_):
         del data_sims
 
 
-ACTIONS = {'image': merge_imgs, 'opflows': merge_opflows};
+ACTIONS = {'image': merge_imgs, 'hdf5': merge_hdf5};
 
 
 def main():

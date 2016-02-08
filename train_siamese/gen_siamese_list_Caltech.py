@@ -10,12 +10,12 @@ import os, cv2
 import numpy as np
 
 
-IMAGE_DIR='/export/data/corel/Caltech256/';
+IMAGE_DIR='/export/space2/vugia/Caltech/Caltech101/';
 
-SIM_COUNT_TRAIN = 30;
-DISSIM_COUNT_TRAIN = SIM_COUNT_TRAIN * 20;  # DISSIM_COUNT_TRAIN = SIM_COUNT_TRAIN * verb_count
+SIM_COUNT_TRAIN = 100;
+DISSIM_COUNT_TRAIN = SIM_COUNT_TRAIN * 100;  # DISSIM_COUNT_TRAIN = SIM_COUNT_TRAIN * verb_count
 SIM_COUNT_TEST = 10;
-DISSIM_COUNT_TEST = SIM_COUNT_TEST * 20;
+DISSIM_COUNT_TEST = SIM_COUNT_TEST * 100;
 
 
 OF_dir = IMAGE_DIR;
@@ -27,23 +27,23 @@ sim_pairs = [];
 verbs = [];
 
 verbs = [];
-for verb in listdir(OF_dir)[1:21]:
+for verb in listdir(OF_dir):
     verb_tmp = os.path.join(OF_dir, verb);
     if os.path.isdir(verb_tmp):
         verbs.append(verb_tmp);
 
-verb_OFs_all = [];
+verb_paths_all = [];
 for verb in verbs:
-    verb_OFs = [];
-    for verb_OF in listdir(verb):
-        verb_OF_tmp = os.path.join(verb, verb_OF);
-        if os.path.isfile(verb_OF_tmp) &  ("jpg" in verb_OF_tmp):
+    verb_paths = [];
+    for verb_path in listdir(verb):
+        verb_path_tmp = os.path.join(verb, verb_path);
+        if os.path.isfile(verb_path_tmp) &  ("jpg" in verb_path_tmp):
 
-            verb_OFs.append(verb_OF_tmp);
-            verb_OFs_all.append(verb_OF_tmp);
+            verb_paths.append(verb_path_tmp);
+            verb_paths_all.append(verb_path_tmp);
 
-    random_map = np.zeros([len(verb_OFs), len(verb_OFs)]);
-    random_keys = np.random.permutation(len(verb_OFs) * len(verb_OFs));
+    random_map = np.zeros([len(verb_paths), len(verb_paths)]);
+    random_keys = np.random.permutation(len(verb_paths) * len(verb_paths));
 
     sim_count = 0;
     index = 0;
@@ -53,10 +53,10 @@ for verb in verbs:
         random_col = random_key % random_map.shape[0]
 
         if not (random_row == random_col):
-            verb_OF_1 = verb_OFs[random_row];
-            verb_OF_2 = verb_OFs[random_col];
+            verb_path_1 = verb_paths[random_row];
+            verb_path_2 = verb_paths[random_col];
 
-            tmp_str = '%s,%s,1' % (verb_OF_1, verb_OF_2);
+            tmp_str = '%s,%s,1' % (verb_path_1, verb_path_2);
             sim_pairs.append(tmp_str);
             sim_count = sim_count + 1;
 
@@ -64,12 +64,12 @@ for verb in verbs:
         if (sim_count >= (SIM_COUNT_TRAIN + SIM_COUNT_TEST)):
             break;
 
-print len(verb_OFs_all);
+print len(sim_pairs);
 
 dissim_pairs = [];
 
-random_map = np.zeros([len(verb_OFs_all), len(verb_OFs_all)]);
-random_keys = np.random.permutation(len(verb_OFs_all) * len(verb_OFs_all));
+random_map = np.zeros([len(verb_paths_all), len(verb_paths_all)]);
+random_keys = np.random.permutation(len(verb_paths_all) * len(verb_paths_all));
 
 dissim_count = 0;
 index = 0;
@@ -78,23 +78,22 @@ while True:
     random_row = int(random_key / random_map.shape[0]);
     random_col = random_key % random_map.shape[0]
 
-    verb_OF_1 = verb_OFs_all[random_row];
-    verb_OF_2 = verb_OFs_all[random_col];
+    verb_path_1 = verb_paths_all[random_row];
+    verb_path_2 = verb_paths_all[random_col];
 
-    if not (verb_OF_1 == verb_OF_2):
+    if not (verb_path_1 == verb_path_2):
         dissim_count = dissim_count + 1;
 
-        tmp_str = '%s,%s,0' % (verb_OF_1, verb_OF_2);
+        tmp_str = '%s,%s,0' % (verb_path_1, verb_path_2);
         dissim_pairs.append(tmp_str);
 
     index = index + 1;
     if (dissim_count >= (DISSIM_COUNT_TRAIN + DISSIM_COUNT_TEST)):
         break;
 
-train_file = "Caltech256_train.txt";
-test_file = "Caltech256_test.txt";
+train_file = "LIST/Caltech101_train.txt";
+test_file = "LIST/Caltech101_test.txt";
 
-print len(sim_pairs);
 print len(dissim_pairs);
 
 train_fid = open(train_file, 'w');
