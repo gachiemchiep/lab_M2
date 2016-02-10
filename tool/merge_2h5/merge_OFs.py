@@ -200,7 +200,7 @@ def get_label(OF_path_, sampling_indexes_, label_file_):
     # print os.path.basename(OF_path_);
     OF_path_label_ = os.path.basename(OF_path_).split("_")[1];
     for count in range(len(labels_)):
-        if (OF_path_label_ == labels_[count]):
+        if (OF_path_label_.lower() == labels_[count].lower()):
             label_ids_[np.where(label_ids_ == 255)] = count;
             break;
 
@@ -221,7 +221,7 @@ def get_label_all(OF_path_, sampling_indexes_, label_file_):
     # print os.path.basename(OF_path_);
     OF_path_label_ = os.path.basename(OF_path_).split("_")[1];
     for count in range(len(labels_)):
-        if (OF_path_label_ == labels_[count]):
+        if (OF_path_label_.lower() == labels_[count].lower()):
             label_ids_[np.where(label_ids_ == 255)] = count;
             break;
 
