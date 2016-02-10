@@ -12,10 +12,16 @@ import numpy as np
 
 IMAGE_DIR='/export/space2/vugia/Caltech/Caltech101/';
 
+# positive: negative is not  1:1
+# positive: megative = 1:16
+
+
 SIM_COUNT_TRAIN = 100;
-DISSIM_COUNT_TRAIN = SIM_COUNT_TRAIN * 100;  # DISSIM_COUNT_TRAIN = SIM_COUNT_TRAIN * verb_count
+SIM_COUNT_TRAIN_ALL  =  SIM_COUNT_TRAIN * 100;
+DISSIM_COUNT_TRAIN = SIM_COUNT_TRAIN * 100 * 16;  # DISSIM_COUNT_TRAIN = SIM_COUNT_TRAIN * verb_count
 SIM_COUNT_TEST = 10;
-DISSIM_COUNT_TEST = SIM_COUNT_TEST * 100;
+SIM_COUNT_TEST_ALL = SIM_COUNT_TEST * 100;
+DISSIM_COUNT_TEST = SIM_COUNT_TEST * 100 * 16;
 
 
 OF_dir = IMAGE_DIR;
@@ -64,8 +70,6 @@ for verb in verbs:
         if (sim_count >= (SIM_COUNT_TRAIN + SIM_COUNT_TEST)):
             break;
 
-print len(sim_pairs);
-
 dissim_pairs = [];
 
 random_map = np.zeros([len(verb_paths_all), len(verb_paths_all)]);
@@ -91,23 +95,31 @@ while True:
     if (dissim_count >= (DISSIM_COUNT_TRAIN + DISSIM_COUNT_TEST)):
         break;
 
+print("Sim count %d" % (len(sim_pairs)));
+print("Dissim count %d" % (len(dissim_pairs)));
+
+
 train_file = "LIST/Caltech101_train.txt";
 test_file = "LIST/Caltech101_test.txt";
 
-print len(dissim_pairs);
 
 train_fid = open(train_file, 'w');
 test_fid = open(test_file, 'w');
 
-random_keys = np.random.permutation(len(sim_pairs));
+sim_random_keys = np.random.permutation(len(sim_pairs));
+dissim_random_keys = np.random.permutation(len(dissim_pairs));
+
+for count in range(SIM_COUNT_TRAIN_ALL):
+    train_fid.write('%s\n' % (sim_pairs[sim_random_keys[count]]));
+
 for count in range(DISSIM_COUNT_TRAIN):
-    train_fid.write('%s\n' % (sim_pairs[random_keys[count]]));
-    train_fid.write('%s\n' % (dissim_pairs[random_keys[count]]));
+    train_fid.write('%s\n' % (dissim_pairs[dissim_random_keys[count]]));
 
 train_fid.close();
 
+for count in range(SIM_COUNT_TRAIN_ALL, SIM_COUNT_TRAIN_ALL + SIM_COUNT_TEST_ALL, 1):
+    test_fid.write('%s\n' % (sim_pairs[sim_random_keys[count]]));
 for count in range(DISSIM_COUNT_TRAIN, (DISSIM_COUNT_TRAIN + DISSIM_COUNT_TEST), 1):
-    test_fid.write('%s\n' % (sim_pairs[random_keys[count]]));
-    test_fid.write('%s\n' % (dissim_pairs[random_keys[count]]));
+    test_fid.write('%s\n' % (dissim_pairs[dissim_random_keys[count]]));
 
 test_fid.close();

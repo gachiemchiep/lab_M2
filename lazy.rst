@@ -162,4 +162,7 @@ batch=256は大きいので、より小さい値を利用する場合、学習st
 
     input_dim: 125      -> 250 になる
 
+caffenet : pool and norm is switched
+temporal.txt: pool and norm is switched too
 
+siamese net margin root 10 -> not good

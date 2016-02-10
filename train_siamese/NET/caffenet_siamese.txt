@@ -315,32 +315,32 @@ layer {
   bottom: "fc6"
   top: "fc6"
 }
-#layer {
-#  name: "drop6"
-#  type: "Dropout"
-#  bottom: "fc6"
-#  top: "fc6"
-#  dropout_param {
-#    dropout_ratio: 0.5
-#  }
-#}
 layer {
-  name: "fc7"
+  name: "drop6"
+  type: "Dropout"
+  bottom: "fc6"
+  top: "fc6"
+  dropout_param {
+    dropout_ratio: 0.5
+  }
+}
+layer {
+  name: "fc7_t"
   type: "InnerProduct"
   bottom: "fc6"
-  top: "fc7"
+  top: "fc7_t"
   param {
-    name: "fc7_w"
+    name: "fc7_t_w"
     lr_mult: 1
     decay_mult: 1
   }
   param {
-    name: "fc7_b"
+    name: "fc7_t_b"
     lr_mult: 2
     decay_mult: 0
   }
   inner_product_param {
-    num_output: 4096
+    num_output: 256
     weight_filler {
       type: "gaussian"
       std: 0.005
@@ -354,18 +354,18 @@ layer {
 layer {
   name: "relu7"
   type: "ReLU"
-  bottom: "fc7"
-  top: "fc7"
+  bottom: "fc7_t"
+  top: "fc7_t"
 }
-#layer {
-#  name: "drop7"
-#  type: "Dropout"
-#  bottom: "fc7"
-#  top: "fc7"
-#  dropout_param {
-#    dropout_ratio: 0.5
-#  }
-#}
+layer {
+  name: "drop7"
+  type: "Dropout"
+  bottom: "fc7_t"
+  top: "fc7_t"
+  dropout_param {
+    dropout_ratio: 0.5
+  }
+}
 
 
 ###############  2nd tuple  #############################
@@ -636,22 +636,22 @@ layer {
   top: "fc6_p"
 }
 layer {
-  name: "fc7_p"
+  name: "fc7_t_p"
   type: "InnerProduct"
   bottom: "fc6_p"
-  top: "fc7_p"
+  top: "fc7_t_p"
   param {
-    name: "fc7_w"
+    name: "fc7_t_w"
     lr_mult: 1
     decay_mult: 1
   }
   param {
-    name: "fc7_b"
+    name: "fc7_t_b"
     lr_mult: 2
     decay_mult: 0
   }
   inner_product_param {
-    num_output: 4096
+    num_output: 256
     weight_filler {
       type: "gaussian"
       std: 0.005
@@ -665,89 +665,19 @@ layer {
 layer {
   name: "relu7_p"
   type: "ReLU"
-  bottom: "fc7_p"
-  top: "fc7_p"
+  bottom: "fc7_t_p"
+  top: "fc7_t_p"
 }
-
-##################################
-layer {
-  name: "fc9"
-  type: "InnerProduct"
-  bottom: "fc7"
-  top: "fc9"
-  param {
-    name: "fc9_w"
-    lr_mult: 1
-    decay_mult: 1
-  }
-  param {
-    name: "fc9_b"
-    lr_mult: 2
-    decay_mult: 0
-  }
-  inner_product_param {
-    num_output: 512
-    weight_filler {
-      type: "gaussian"
-      std: 0.005
-    }
-    bias_filler {
-      type: "constant"
-      value: 1
-    }
-  }
-}
-layer {
-  name: "relu9"
-  type: "ReLU"
-  bottom: "fc9"
-  top: "fc9"
-}
-
-
-layer {
-  name: "fc9_p"
-  type: "InnerProduct"
-  bottom: "fc7_p"
-  top: "fc9_p"
-  param {
-    name: "fc9_w"
-    lr_mult: 1
-    decay_mult: 1
-  }
-  param {
-    name: "fc9_b"
-    lr_mult: 2
-    decay_mult: 0
-  }
-  inner_product_param {
-    num_output: 512
-    weight_filler {
-      type: "gaussian"
-      std: 0.005
-    }
-    bias_filler {
-      type: "constant"
-      value: 1
-    }
-  }
-}
-layer {
-  name: "relu9_p"
-  type: "ReLU"
-  bottom: "fc9_p"
-  top: "fc9_p"
-}
-
 ##############################
 layer {
   name: "loss"
   type: "ContrastiveLoss"
-  bottom: "fc9"
-  bottom: "fc9_p"
+  bottom: "fc7_t"
+  bottom: "fc7_t_p"
   bottom: "label"
   top: "loss"
+  loss_weight: 1.0
   contrastive_loss_param {
-    margin: 1.0
+    margin: 10
   }
 }

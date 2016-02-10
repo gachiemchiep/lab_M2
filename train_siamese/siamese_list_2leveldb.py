@@ -89,7 +89,9 @@ def merge_imgs(argv_):
     # default size: height: 256 width: 340
 
     im_1_raw = cv2.imread(patch_1_paths[0], cv2.COLOR_RGB2BGR);
-    im_1 = cv2.resize(im_1_raw, (340, 256))
+    #im_1 = cv2.resize(im_1_raw, (340, 256))
+    # Caltech
+    im_1 = cv2.resize(im_1_raw, (256, 256))
     im_1_datum = np.transpose(im_1, [2, 0, 1]);  # h x w x channel -> channel x h x w
 
     # store data size
@@ -131,8 +133,12 @@ def merge_imgs(argv_):
             im_1_raw = cv2.imread(patch_1_paths[list_index]);
             im_2_raw = cv2.imread(patch_2_paths[list_index]);
 
-            im_1 = cv2.resize(im_1_raw, (340, 256))
-            im_2 = cv2.resize(im_2_raw, (340, 256))
+            # im_1 = cv2.resize(im_1_raw, (340, 256))
+            # im_2 = cv2.resize(im_2_raw, (340, 256))
+
+            # Caltech
+            im_1 = cv2.resize(im_1_raw, (256, 256))
+            im_2 = cv2.resize(im_2_raw, (256, 256))
 
             im_1_datum = np.transpose(im_1, [2, 0, 1]);
             im_2_datum = np.transpose(im_2, [2, 0, 1]);

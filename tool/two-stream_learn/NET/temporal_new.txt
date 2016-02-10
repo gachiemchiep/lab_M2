@@ -51,7 +51,8 @@ layer {
   convolution_param {
     num_output: 96
     kernel_size: 7
-    stride: 2
+    stride: 3
+    pad: 0
     weight_filler {
       type: "gaussian"
       std: 0.01
@@ -70,17 +71,6 @@ layer {
 }
 layer {
   bottom: "conv1"
-  top: "norm1"
-  name: "norm1"
-  type: "LRN"
-  lrn_param {
-    local_size: 5
-    alpha: 0.0005
-    beta: 0.75
-  }
-}
-layer {
-  bottom: "norm1"
   top: "pool1"
   name: "pool1"
   type: "Pooling"
@@ -92,6 +82,17 @@ layer {
 }
 layer {
   bottom: "pool1"
+  top: "norm1"
+  name: "norm1"
+  type: "LRN"
+  lrn_param {
+    local_size: 5
+    alpha: 0.0005
+    beta: 0.75
+  }
+}
+layer {
+  bottom: "norm1"
   top: "conv2"
   name: "conv2"
   type: "Convolution"
@@ -108,13 +109,14 @@ layer {
     kernel_size: 5
     stride: 2
     pad: 1
+    group: 2
     weight_filler {
       type: "gaussian"
       std: 0.01
     }
     bias_filler {
       type: "constant"
-      value: 0.1
+      value: 1
     }
   }
 }
@@ -126,17 +128,6 @@ layer {
 }
 layer {
   bottom: "conv2"
-  top: "norm2"
-  name: "norm2"
-  type: "LRN"
-  lrn_param {
-    local_size: 5
-    alpha: 0.0005
-    beta: 0.75
-  }
-}
-layer {
-  bottom: "norm2"
   top: "pool2"
   name: "pool2"
   type: "Pooling"
@@ -148,6 +139,17 @@ layer {
 }
 layer {
   bottom: "pool2"
+  top: "norm2"
+  name: "norm2"
+  type: "LRN"
+  lrn_param {
+    local_size: 5
+    alpha: 0.0005
+    beta: 0.75
+  }
+}
+layer {
+  bottom: "norm2"
   top: "conv3"
   name: "conv3"
   type: "Convolution"
@@ -196,13 +198,14 @@ layer {
     num_output: 512
     pad: 1
     kernel_size: 3
+    group: 2
     weight_filler {
       type: "gaussian"
       std: 0.01
     }
     bias_filler {
       type: "constant"
-      value: 0.1
+      value: 1
     }
   }
 }
@@ -229,13 +232,15 @@ layer {
     num_output: 512
     pad: 1
     kernel_size: 3
+    group: 2
+    stride: 1
     weight_filler {
       type: "gaussian"
       std: 0.01
     }
     bias_filler {
       type: "constant"
-      value: 0.1
+      value: 1
     }
   }
 }
@@ -277,7 +282,7 @@ layer {
     }
     bias_filler {
       type: "constant"
-      value: 0.1
+      value: 1
     }
   }
 }
@@ -317,7 +322,7 @@ layer {
     }
     bias_filler {
       type: "constant"
-      value: 0.1
+      value: 1
     }
   }
 }
