@@ -340,7 +340,7 @@ layer {
     decay_mult: 0
   }
   inner_product_param {
-    num_output: 256
+    num_output: 1024
     weight_filler {
       type: "gaussian"
       std: 0.005
@@ -651,7 +651,7 @@ layer {
     decay_mult: 0
   }
   inner_product_param {
-    num_output: 256
+    num_output: 1024
     weight_filler {
       type: "gaussian"
       std: 0.005
@@ -678,6 +678,6 @@ layer {
   top: "loss"
   loss_weight: 1.0
   contrastive_loss_param {
-    margin: 10
+    margin: 3.16
   }
 }
