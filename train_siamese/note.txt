@@ -23,3 +23,22 @@ positive: nagative = 1:20
 how to test:  input a image -> show the similar image
 
 finetune from caffe net, so value: 1 instead of value: 0.1
+
+
+
+
+import sys, os, leveldb, cv2, h5py
+import numpy as np
+
+sys.path.append("/export/space2/vugia/caffe/python/")
+import caffe
+
+from caffe.proto import caffe_pb2
+
+db = leveldb.LevelDB('/export/space/vugia/tmp/UCF-101_temporal/trainlist01_1opflows_h5_all_40_shuffled/');
+
+for count in range(1, 10000):
+    key = '{:08}'.format(count);
+    datum = caffe_pb2.Datum.FromString(db.Get(key));
+    print datum.label
+    time.sleep(0.05)

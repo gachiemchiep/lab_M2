@@ -129,6 +129,7 @@ def merge_opflows(argv_):
             print("%s\t" % (h5_path));
             print("Merge :%d times\t List index: %d\t"
                   "Array start: %d\t end: %d" % (merge_time + 1, list_index, count_start, count_end));
+            print("Label: %d" % (h5_labels[0, 0]));
 
             data[count_start:count_end, :, :, :] = h5_data[:, :, :, :];
             labels[count_start:count_end] = h5_labels[:];

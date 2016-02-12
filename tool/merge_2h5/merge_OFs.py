@@ -265,6 +265,7 @@ def main():
         data = merge_OF_files_all(OF_x_paths, OF_y_paths, stacked_count, sampling_indexes);
         labels = get_label_all(OF_path, sampling_indexes, 'UCF-101_labels.txt');
 
+    print labels[0];
     save_h5(output_hdf5, data, labels);
 
 
