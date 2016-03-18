@@ -165,19 +165,34 @@ batch=256は大きいので、より小さい値を利用する場合、学習st
 特徴抽出
 ^^^^^^^^^
 
-extract_featuresの中にあるファイルを利用する。
+Optical flowsの場合
 
 .. code-block:: html
 
-    "Usage python %s network trained_model mean_file h5_list features_directory
-    "Usage python %s network trained_model mean_file imgs_list features_file"
+    python extract_OFs_features.py network trained_model mean_file h5_list features_directory
+
+画像の場合、
+
+.. code-block:: html
+
+    python extract_OFs_features.py network trained_model mean_file imgs_list features_file
 
 Siameseネット
 ------------
 
+Siameseネットの学習用、テスト(validate)用のデータを生成
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+siamese_list_2leveldb.pyを実行
+
 学習
 ^^^^^
 
+two-stream CNNのように行う
+
+
 特徴抽出
 ^^^^^^^^
+
+two-stream CNNのように行う
 
