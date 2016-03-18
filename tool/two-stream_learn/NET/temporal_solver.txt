@@ -1,14 +1,12 @@
 # The train/test net protocol buffer definition
 net: "NETWORK"
 
-######## disable test ##########
-test_iter: 100
-test_interval: 500
-test_initialization: true
+test_iter: 500
+test_interval: 1000
 
 # The base learning rate, momentum and the weight decay of the network.
 #############################
-base_lr: 0.01
+base_lr: 0.001
 lr_policy: "step"
 gamma: 0.1
 stepsize: 50000
@@ -16,10 +14,10 @@ momentum: 0.9
 weight_decay: 0.0005
 
 # Display every 100 iterations
-display: 100
+display: 20
 
 # The maximum number of iterations
-max_iter: 70000
+max_iter: 150000
 
 # snapshot intermediate results
 snapshot: 15000

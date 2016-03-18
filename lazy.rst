@@ -161,3 +161,23 @@ batch=256は大きいので、より小さい値を利用する場合、学習st
 .. code-block:: html
 
     input_dim: 125      -> 250 になる
+
+特徴抽出
+^^^^^^^^^
+
+extract_featuresの中にあるファイルを利用する。
+
+.. code-block:: html
+
+    "Usage python %s network trained_model mean_file h5_list features_directory
+    "Usage python %s network trained_model mean_file imgs_list features_file"
+
+Siameseネット
+------------
+
+学習
+^^^^^
+
+特徴抽出
+^^^^^^^^
+

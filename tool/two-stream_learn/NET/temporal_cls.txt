@@ -138,7 +138,7 @@ layers {
   type: CONVOLUTION
   convolution_param {
     num_output: 512
-    pad: 1
+    : 1
     kernel_size: 3
   }
 }
