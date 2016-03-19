@@ -1,3 +1,32 @@
+working directory
+====================
+
+/host/space2/vugia/UCF-101
+
+Two-stream CNNの特徴
+
+.. code-block:: html
+
+    /host/space2/vugia/UCF-101/imgs_fc7
+    /host/space2/vugia/UCF-101/10opflows_fc7
+
+Siameseネットワークで再学習されたモデルの特徴
+
+.. code-block:: html
+
+    /host/space2/vugia/UCF-101/imgs_fc7_siamese
+    /host/space2/vugia/UCF-101/10opflows_fc7_siamese
+
+モデル
+
+.. code-block:: html
+
+    # siamese
+    /export/space2/vugia/UCF-101/training/train_siamese/MODEL
+    # two-stream cnn
+    /export/space2/vugia/UCF-101/testing/spatial_v2.caffemodel
+    /export/space2/vugia/UCF-101/testing/temporal_v2.caffemodel
+
 流れ概要は以下のようになる
 ==========================
 
